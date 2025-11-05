@@ -1,35 +1,42 @@
-// Contenido de src/components/MainLayout.jsx
+// Contenido de src/components/MainLayout.jsx (Funcionalidad Completa Pre-Refactorización)
 
-import React, { useState } from 'react'; // 1. Importar useState
+import React, { useState } from 'react'; 
 import { Outlet } from 'react-router-dom';
 import Header from './Header'; 
-import { List } from 'react-bootstrap-icons'; // 2. Importar el ícono de "hamburguesa"
+import { List } from 'react-bootstrap-icons'; // Ícono de "hamburguesa"
 
 function MainLayout() {
-  // 3. Crear el estado para el menú móvil
+  // Estado para el menú móvil: true si está abierto, false si está cerrado.
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  // 4. Función para abrir/cerrar el menú
+  // Función para alternar el estado del menú
   const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
+    setIsMenuOpen(prev => !prev);
   };
 
   return (
     <div className="wrapper">
-      {/* 5. Pasar el estado y la función al Header (aside) */}
+      {/* El Header es el aside (barra lateral).
+        Le pasamos el estado del menú y la función para cambiarlo.
+      */}
       <Header isMenuOpen={isMenuOpen} toggleMenu={toggleMenu} />
 
-      {/* 6. Añadir el overlay (se mostrará solo si el CSS lo permite) */}
-      {/* Este div DEBE estar justo después del Header para que el CSS funcione */}
+      {/* Overlay móvil: Se muestra como un fondo oscuro que ayuda a cerrar el menú 
+        y bloquea el contenido cuando el menú lateral está abierto en pantallas pequeñas.
+      */}
       <div className="overlay-mobile" onClick={toggleMenu}></div>
 
       <main>
-        {/* 7. Añadir el botón hamburguesa (se mostrará solo si el CSS lo permite) */}
+        {/* Botón Hamburguesa: Es visible solo en resoluciones móviles (definido en CSS).
+          Su click activa la función toggleMenu.
+        */}
         <button className="btn-menu-toggle" onClick={toggleMenu}>
           <List />
         </button>
 
-        {/* El resto de tu página */}
+        {/* Outlet: Aquí es donde React Router renderiza el contenido de la página actual 
+          (HomePage, ProductsPage, CartPage, etc.).
+        */}
         <Outlet />
       </main>
     </div>

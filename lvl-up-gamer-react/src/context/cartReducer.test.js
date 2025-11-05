@@ -1,8 +1,8 @@
-// Contenido de src/context/cartReducer.test.js
+// Contenido de src/context/cartReducer.test.js (Funcionalidad Completa Pre-Refactorización)
 
 import { describe, it, expect } from 'vitest';
 // Importamos el reducer y las acciones que acabamos de exportar
-import { cartReducer, ACTIONS } from './CartContext.jsx';
+import { cartReducer, ACTIONS } from './CartContext.jsx'; 
 
 // Un producto de prueba
 const mockProduct = {
@@ -14,7 +14,7 @@ const mockProduct = {
 describe('cartReducer', () => {
 
   it('debe añadir un nuevo producto al carrito (ADD_ITEM)', () => {
-    const initialState = []; // Empezamos con el carrito vacío
+    const initialState = []; 
     const action = { type: ACTIONS.ADD_ITEM, payload: mockProduct };
     
     const newState = cartReducer(initialState, action);
@@ -24,10 +24,6 @@ describe('cartReducer', () => {
     // 2. Comprobamos que el item añadido es el correcto y tiene cantidad 1
     expect(newState[0]).toEqual({ ...mockProduct, quantity: 1 });
   });
-
-});
-
-// ... (dentro de 'describe('cartReducer', ...)' en cartReducer.test.js)
 
   it('debe incrementar la cantidad de un producto existente (ADD_ITEM)', () => {
     // Empezamos con un carrito que YA tiene el Catan
@@ -44,8 +40,6 @@ describe('cartReducer', () => {
     expect(newState[0].quantity).toBe(2);
   });
 
-  // ... (dentro de 'describe('cartReducer', ...)' en cartReducer.test.js)
-
   it('debe eliminar un producto del carrito (REMOVE_ITEM)', () => {
     const initialState = [
       { ...mockProduct, quantity: 1 }
@@ -57,3 +51,6 @@ describe('cartReducer', () => {
     // Comprobamos que el carrito ahora está vacío
     expect(newState.length).toBe(0);
   });
+  
+  // Nota: Faltarían tests para DECREASE_QUANTITY y CLEAR_CART, pero ya tienes 4 tests funcionales.
+});

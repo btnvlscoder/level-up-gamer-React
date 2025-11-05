@@ -1,25 +1,22 @@
-// Contenido de src/components/ProductCard.jsx
+// Contenido de: src/components/ProductCard.jsx (Funcionalidad Completa Pre-Refactorización)
 
 import React from "react";
 import { Link } from "react-router-dom";
 import { Cart } from "react-bootstrap-icons";
 import { PriceFormat } from '../utils/formatter.js';
 
-// --- IMPORTAR LO QUE FALTA ---
 import { useCart } from '../context/CartContext'; 
-import toast from 'react-hot-toast'; // <--- Importar toast
+import toast from 'react-hot-toast'; 
 
 function ProductCard({product}) {
-  // --- OBTENER LA FUNCIÓN 'addItem' ---
   const { addItem } = useCart(); 
 
   const {code, name, signature, price, img} = product;
   const imageUrl = img && img.length > 0 ? img[0] : '/img/placeholder.jpg';
 
-  // --- ACTUALIZAR EL HANDLER ---
   const handleAddToCart = () => {
     addItem(product); 
-    toast.success(`"${name}" agregado al carrito!`); // <--- Llamar a toast
+    toast.success(`"${name}" agregado al carrito!`); 
   }
 
   return (

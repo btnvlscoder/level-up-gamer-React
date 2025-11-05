@@ -1,12 +1,10 @@
-// Contenido de src/pages/ProductDetailPage.jsx
-
 import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import products from '../data/products'; // <--- Asegúrate de que esta ruta también sea correcta
+import products from '../data/products'; 
 import { Cart, ArrowLeft, ChevronLeft, ChevronRight } from 'react-bootstrap-icons';
 import { PriceFormat } from '../utils/formatter.js';
 import { useCart } from '../context/CartContext';
-import toast from 'react-hot-toast'; // <--- Importar toast
+import toast from 'react-hot-toast'; 
 
 export default function ProductDetailPage() {
   const { code } = useParams();
@@ -14,6 +12,7 @@ export default function ProductDetailPage() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const { addItem } = useCart(); 
 
+  // Manejo de Producto No Encontrado
   if (!product) {
     return (
       <div className="producto-detalle-container">
@@ -27,6 +26,7 @@ export default function ProductDetailPage() {
 
   const { name, signature, category, description, price, img } = product;
 
+  // Lógica del Slider
   const prevSlide = () => {
     const isFirstSlide = currentIndex === 0;
     const newIndex = isFirstSlide ? img.length - 1 : currentIndex - 1;
@@ -43,26 +43,33 @@ export default function ProductDetailPage() {
     setCurrentIndex(index);
   };
   
+  // Manejador de Carrito
   const handleAddToCart = () => {
     addItem(product);
-    toast.success(`"${name}" agregado al carrito!`); // <--- Llamar a toast
+    toast.success(`"${name}" agregado al carrito!`); 
   }
 
   return (
     <div className="producto-detalle-container">
       <div className="producto-detalle">
         
+        {/* Slider e Imágenes */}
         <div className="producto-slider">
           <button className="slider-btn prev" onClick={prevSlide}>
             <ChevronLeft />
           </button>
           <div className="slider-container">
-            <img src={img[currentIndex]} alt={`${name} - imagen ${currentIndex + 1}`} className="slider-img active" />
+            <img 
+              src={img[currentIndex]} 
+              alt={`${name} - imagen ${currentIndex + 1}`} 
+              className="slider-img active" 
+            />
           </div>
           <button className="slider-btn next" onClick={nextSlide}>
             <ChevronRight />
           </button>
 
+          {/* Miniaturas */}
           {img.length > 1 && (
             <div className="miniaturas-container">
               {img.map((imagenSrc, index) => (
@@ -78,6 +85,7 @@ export default function ProductDetailPage() {
           )}
         </div>
 
+        {/* Información y Botones */}
         <div className="producto-info">
           <h2 className="producto-titulo-detalle">{name}</h2>
           <p className="producto-marca-detalle">{signature}</p>

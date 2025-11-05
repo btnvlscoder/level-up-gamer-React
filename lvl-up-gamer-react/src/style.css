@@ -1548,3 +1548,69 @@ FIN SECCIÓN CORREGIDA
   color: var(--clr-main);
   font-weight: 600;
 }
+
+/* --- Bloque de Autenticación (Debe estar en src/style.css) --- */
+
+.auth-container {
+  /* Ancho máximo y centrado */
+  max-width: 500px;
+  margin: 2rem auto;
+  /* El padding interno es clave para el espaciado */
+  padding: 2.5rem; 
+  
+  background-color: var(--clr-main);
+  border: 1px solid var(--clr-accent-blue);
+  border-radius: 1rem;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+  color: var(--clr-white);
+}
+
+.auth-form .form-group {
+  margin-bottom: 1.5rem;
+}
+
+.auth-form label {
+  display: block; /* Asegura que el label ocupe toda la línea */
+  color: var(--clr-accent-blue);
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  font-family: 'Roboto', sans-serif;
+  font-size: 0.9rem;
+}
+
+.auth-form input {
+  /* Estilos para que el input ocupe el 100% del contenedor */
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--clr-accent-blue);
+  border-radius: 0.5rem;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: var(--clr-white);
+  box-sizing: border-box; /* Crucial para que el ancho sea predecible */
+  font-family: 'Roboto', sans-serif;
+}
+
+.auth-button {
+  /* ¡CLAVE!: Anulamos cualquier borde o fondo predeterminado */
+  border: none !important; 
+  outline: none !important; 
+  
+  width: 100%;
+  background-color: var(--clr-accent-green);
+  color: var(--clr-main);
+  padding: .75rem;
+  text-transform: uppercase;
+  /* Damos el estilo neon y redondo */
+  border-radius: 2rem; 
+  cursor: pointer;
+  transition: all .3s;
+  font-size: 1rem;
+  font-weight: 700;
+  margin-top: 1rem;
+  font-family: 'Orbitron', sans-serif; /* Usamos Orbitron para el botón */
+}
+
+.auth-button:hover {
+  background-color: #2fb913; /* Un verde un poco más oscuro */
+  box-shadow: 0 0 15px var(--clr-accent-green); /* Efecto neón al pasar el mouse */
+}

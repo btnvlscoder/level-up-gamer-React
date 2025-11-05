@@ -1,9 +1,9 @@
-// Contenido de src/context/CartContext.jsx
+// Contenido de: src/context/CartContext.jsx (Funcionalidad Completa Pre-Refactorización)
 
-// 1. Importar 'useEffect'
 import React, { createContext, useContext, useReducer, useMemo, useEffect } from 'react';
+import { useAuth } from './AuthContext';
 
-// ... (Las ACCIONES y el 'cartReducer' se quedan exactamente igual) ...
+// --- DEFINICIÓN DE ACCIONES ---
 export const ACTIONS = {
   ADD_ITEM: 'ADD_ITEM',
   REMOVE_ITEM: 'REMOVE_ITEM',
@@ -12,6 +12,7 @@ export const ACTIONS = {
   CLEAR_CART: 'CLEAR_CART',
 };
 
+// --- FUNCIÓN REDUCTORA (Lógica de Estado) ---
 export function cartReducer(state, action) {
   switch (action.type) {
     case ACTIONS.ADD_ITEM: {
@@ -54,35 +55,32 @@ export function cartReducer(state, action) {
   }
 }
 
-// 2. Nueva función para LEER el estado inicial
-//    Usaremos la misma key 'cart-levelup' que tenías en tu JS original
+// Función para obtener el estado inicial del carrito desde localStorage (Persistencia)
 const getInitialCart = () => {
   try {
     const savedCart = localStorage.getItem('cart-levelup');
     return savedCart ? JSON.parse(savedCart) : [];
   } catch (e) {
     console.error("Error al cargar el carrito desde localStorage", e);
-    return []; // Si hay un error, empezamos con un carrito vacío
+    return [];
   }
 };
 
 const CartContext = createContext();
 
+// Proveedor del contexto del carrito
 export function CartProvider({ children }) {
-  
-  // 3. Modificamos 'useReducer' para que use la función 'getInitialCart'
-  //    El tercer argumento 'getInitialCart' es un "inicializador vago" (lazy initializer)
-  //    Se ejecuta solo una vez, cuando el componente se monta.
   const [cart, dispatch] = useReducer(cartReducer, [], getInitialCart);
+  
+  // Obtener el usuario actual desde AuthContext
+  const { currentUser } = useAuth();
 
-  // --- ¡NUEVO HOOK 'useEffect'! ---
-  // 4. Guardar en localStorage CADA VEZ que el estado 'cart' cambie
+  // EFECTO: Guardar en localStorage cada vez que el carrito cambia
   useEffect(() => {
     localStorage.setItem('cart-levelup', JSON.stringify(cart));
-  }, [cart]); // La 'dependencia' [cart] significa "ejecuta esto cuando 'cart' cambie"
+  }, [cart]);
 
-
-  // ... (Todas tus funciones: addItem, removeItem, etc. se quedan igual) ...
+  // Wrappers de Dispatch
   const addItem = (product) => {
     dispatch({ type: ACTIONS.ADD_ITEM, payload: product });
   };
@@ -99,14 +97,22 @@ export function CartProvider({ children }) {
     dispatch({ type: ACTIONS.CLEAR_CART });
   };
 
-  // ... (Tu 'useMemo' para calcular totales se queda igual) ...
-  const { totalItems, cartTotal } = useMemo(() => {
+  // CÁLCULO DE TOTALES (con Descuento)
+  const { totalItems, subtotal, discount, cartTotal } = useMemo(() => {
     const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
-    const cartTotal = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
-    return { totalItems, cartTotal };
-  }, [cart]);
+    const subtotal = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
+    
+    let discount = 0;
+    // Aplicar descuento si el usuario está logueado y tiene el beneficio
+    if (currentUser && currentUser.tieneDescuentoDuoc) {
+      discount = subtotal * 0.10; // 10% de descuento
+    }
+    
+    const cartTotal = subtotal - discount;
+    
+    return { totalItems, subtotal, discount, cartTotal };
+  }, [cart, currentUser]); // Depende de cart Y currentUser
 
-  // ... (Tu 'value' se queda igual) ...
   const value = {
     cart,
     addItem,
@@ -115,13 +121,14 @@ export function CartProvider({ children }) {
     decreaseQuantity,
     clearCart,
     totalItems,
+    subtotal,
+    discount,
     cartTotal,
   };
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 }
 
-// ... (Tu hook 'useCart' se queda igual) ...
 export function useCart() {
   const context = useContext(CartContext);
   if (!context) {

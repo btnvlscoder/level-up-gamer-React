@@ -1,53 +1,61 @@
-// Contenido de src/pages/CartPage.jsx
-
 import React, { useState } from 'react';
 import { useCart } from '../context/CartContext';
 import { PriceFormat } from '../utils/formatter';
 import { EmojiFrown, Trash, ArrowLeft } from 'react-bootstrap-icons';
-import { Link } from 'react-router-dom';
-
-// Importamos el nuevo modal
-import VoucherModal from '../components/VoucherModal'; 
+import { Link, useNavigate } from 'react-router-dom'; 
+import VoucherModal from '../components/VoucherModal';
+import { useAuth } from '../context/AuthContext'; 
+import toast from 'react-hot-toast';
 
 export default function CartPage() {
-  // Estado para mostrar/ocultar el modal
   const [showVoucher, setShowVoucher] = useState(false);
   
-  // Estados para guardar una "instantánea" del carrito al momento de comprar
+  // Estados para guardar la instantánea del carrito para el voucher (pre-limpieza)
   const [voucherCart, setVoucherCart] = useState([]);
+  const [voucherSubtotal, setVoucherSubtotal] = useState(0); 
+  const [voucherDiscount, setVoucherDiscount] = useState(0);
   const [voucherTotal, setVoucherTotal] = useState(0);
 
-  const { 
-    cart, 
-    cartTotal, 
-    removeItem, 
-    increaseQuantity, 
-    decreaseQuantity, 
-    clearCart 
+  const {
+    cart,
+    subtotal,
+    discount,
+    cartTotal,
+    removeItem,
+    increaseQuantity,
+    decreaseQuantity,
+    clearCart,
   } = useCart();
 
-  // Función para manejar la compra
+  const { currentUser } = useAuth(); // Para proteger la compra
+  const navigate = useNavigate();
+
   const handleCompra = () => {
-    // No hacer nada si el carrito ya está vacío
+    // 1. PROTEGER RUTA
+    if (!currentUser) {
+      toast.error("Debes iniciar sesión para comprar.");
+      navigate('/login'); 
+      return;
+    }
+
     if (cart.length === 0) return;
-    
-    // 1. Guardamos una instantánea del carrito y el total ANTES de limpiarlo
-    setVoucherCart([...cart]); 
+
+    // 2. Guardar instantánea del carrito y totales
+    setVoucherCart([...cart]);
+    setVoucherSubtotal(subtotal);
+    setVoucherDiscount(discount);
     setVoucherTotal(cartTotal);
-    
-    // 2. Mostrar el modal
+
+    // 3. Mostrar Voucher y Limpiar Carrito
     setShowVoucher(true);
-    
-    // 3. Limpiar el carrito del contexto
     clearCart();
   };
 
-  // Función para que el modal se cierre (se pasa como prop)
   const handleCloseVoucher = () => {
     setShowVoucher(false);
   };
 
-  // Si el carrito está vacío Y el modal NO está activo, muestra el mensaje
+  // Vista de Carrito Vacío
   if (cart.length === 0 && !showVoucher) {
     return (
       <div className="contenedor-carrito">
@@ -62,12 +70,12 @@ export default function CartPage() {
     );
   }
 
-  // Si el carrito TIENE items, muestra la lista
+  // Vista de Carrito con Items
   return (
     <>
       <div className="contenedor-carrito">
         <h2 className="titulo-principal">Carro de compras</h2>
-        
+
         <div className="carrito-productos">
           {cart.map(item => (
             <div className="carrito-producto" key={item.code}>
@@ -101,28 +109,38 @@ export default function CartPage() {
             </div>
           ))}
         </div>
-        
+
+        {/* Resumen del Carrito con Descuento */}
         <div className="carrito-resumen">
           <div className="resumen-total">
-            <p>Total: <span>{PriceFormat(cartTotal)}</span></p>
+            <p className="resumen-linea">Subtotal: <span>{PriceFormat(subtotal)}</span></p>
+            {discount > 0 && (
+              <p className="resumen-linea descuento">
+                Descuento Duoc (10%): <span>- {PriceFormat(discount)}</span>
+              </p>
+            )}
+            <p className="resumen-linea total">
+              Total: <span>{PriceFormat(cartTotal)}</span>
+            </p>
           </div>
-          
+
           <div className="carrito-botones">
             <button className="btn-vaciar" onClick={() => clearCart()}>Vaciar carrito</button>
-            <button className="btn-comprar" onClick={handleCompra}>Comprar ahora</button>
+            <button className="btn-comprar" onClick={handleCompra}>
+              {currentUser ? "Comprar ahora" : "Inicia sesión para comprar"}
+            </button>
           </div>
         </div>
       </div>
 
-      {/* Finalmente, renderizamos el modal SÓLO SI showVoucher es true.
-        Le pasamos la 'instantánea' (voucherCart y voucherTotal) que guardamos,
-        ya que 'cart' y 'cartTotal' del contexto ya están vacíos en este punto.
-      */}
+      {/* Voucher Modal */}
       {showVoucher && (
-        <VoucherModal 
-          cart={voucherCart} 
-          cartTotal={voucherTotal} 
-          onClose={handleCloseVoucher} 
+        <VoucherModal
+          cart={voucherCart}
+          subtotal={voucherSubtotal}
+          discount={voucherDiscount}
+          cartTotal={voucherTotal}
+          onClose={handleCloseVoucher}
         />
       )}
     </>

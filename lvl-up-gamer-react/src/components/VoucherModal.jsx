@@ -1,17 +1,17 @@
-// Contenido de src/components/VoucherModal.jsx
+// Contenido de: src/components/VoucherModal.jsx (Funcionalidad Completa Pre-Refactorización)
 
-import React, { useState } from 'react'; // <--- useState ya está
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { PriceFormat } from '../utils/formatter';
 import { Receipt, Send, ArrowLeft, CheckCircleFill } from 'react-bootstrap-icons';
+import { useAuth } from '../context/AuthContext'; 
+import toast from 'react-hot-toast';
 
-// Ya NO necesitamos la función 'generateEmailBody'
-
-export default function VoucherModal({ cart, cartTotal, onClose }) {
-  const [email, setEmail] = useState('');
+export default function VoucherModal({ cart, subtotal, discount, cartTotal, onClose }) {
+  const { currentUser } = useAuth();
   
-  // --- ¡NUEVO ESTADO! ---
-  // Para rastrear si el "envío" (simulado) ya se hizo
+  // Usa el email del usuario autenticado por defecto
+  const [email, setEmail] = useState(currentUser?.email || ''); 
   const [isEmailSent, setIsEmailSent] = useState(false);
   
   const navigate = useNavigate();
@@ -24,19 +24,17 @@ export default function VoucherModal({ cart, cartTotal, onClose }) {
     minute: '2-digit'
   });
 
-  // --- ¡NUEVO HANDLER! ---
-  // Se llama cuando el usuario hace clic en "Enviar Copia"
   const handleSimulateEmailSend = (e) => {
-    e.preventDefault(); // Previene que el formulario recargue la página
+    e.preventDefault(); 
     
-    // Solo "enviamos" si el email no está vacío
     if (email.trim() === '') {
-      alert("Por favor, ingresa un correo.");
+      toast.error("Por favor, ingresa un correo.");
       return;
     }
     
     console.log(`Simulando envío de boleta a: ${email}`);
     setIsEmailSent(true);
+    toast.success("Comprobante enviado (simulado)!");
   };
 
   const handleCloseAndNavigate = () => {
@@ -60,19 +58,26 @@ export default function VoucherModal({ cart, cartTotal, onClose }) {
             ))}
           </div>
           
-          <p className="voucher-total">
-            <strong>Total:</strong> <span>{PriceFormat(cartTotal)}</span>
-          </p>
+          {/* Resumen de totales, incluyendo subtotal y descuento */}
+          <div className="voucher-total-summary">
+            <p className="voucher-line">
+              <strong>Subtotal:</strong> <span>{PriceFormat(subtotal)}</span>
+            </p>
+            {discount > 0 && (
+              <p className="voucher-line descuento">
+                <strong>Descuento Duoc (10%):</strong> <span>- {PriceFormat(discount)}</span>
+              </p>
+            )}
+            <p className="voucher-total">
+              <strong>Total:</strong> <span>{PriceFormat(cartTotal)}</span>
+            </p>
+          </div>
         </div>
 
-        {/* --- Formulario de Email (ACTUALIZADO) --- */}
-        {/* Lo envolvemos en una <form> para usar el 'onSubmit' */}
         <form className="voucher-email-form" onSubmit={handleSimulateEmailSend}>
 
-          {/* Usamos renderizado condicional: */}
           {!isEmailSent ? (
-            
-            // 1. Si AÚN NO se envía, mostramos el input y el botón
+            // Vista inicial: pide el email
             <>
               <p>Ingresa tu correo para enviar una copia:</p>
               <input 
@@ -80,10 +85,10 @@ export default function VoucherModal({ cart, cartTotal, onClose }) {
                 placeholder="tu.correo@ejemplo.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                required // Hacemos que el campo sea requerido
+                required
               />
               <button 
-                type="submit" // El 'type="submit"' activará el 'onSubmit' del form
+                type="submit" 
                 className="btn-enviar-correo"
               >
                 <Send /> Enviar Copia
@@ -91,13 +96,11 @@ export default function VoucherModal({ cart, cartTotal, onClose }) {
             </>
 
           ) : (
-            
-            // 2. Si YA se envió, mostramos el mensaje de éxito
+            // Vista de éxito: muestra la confirmación
             <div className="email-success-message">
               <CheckCircleFill />
               <p>¡Se ha enviado el comprobante al correo <strong>{email}</strong>!</p>
             </div>
-
           )}
         </form>
 

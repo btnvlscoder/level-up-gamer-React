@@ -1,63 +1,111 @@
-// Contenido de src/components/Header.jsx
+// Contenido de: src/components/Header.jsx (Funcional y Corregido)
 
 import React from 'react';
-import { NavLink } from 'react-router-dom';
-import { 
-  Joystick, 
-  HouseDoor, 
-  Controller, 
-  ChatDotsFill, 
-  Cart 
+import { useNavigate } from 'react-router-dom';
+import {
+  Joystick,
+  HouseDoor,
+  Controller,
+  ChatDotsFill,
+  Cart,
+  BoxArrowRight,
+  PersonCircle,
+  PersonPlusFill,
+  PersonVcard
 } from 'react-bootstrap-icons';
-import { useCart } from '../context/CartContext'; 
+import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
+import toast from 'react-hot-toast';
 
-// 1. Aceptar 'isMenuOpen' y 'toggleMenu' como props
 function Header({ isMenuOpen, toggleMenu }) {
-  const { totalItems } = useCart(); 
+  const { totalItems } = useCart();
+  const { currentUser, logout } = useAuth();
+  const navigate = useNavigate();
 
-  // 2. Función para cerrar el menú si se hace clic en un link (en móvil)
-  const handleLinkClick = () => {
+  const handleLinkClick = (path) => {
     if (isMenuOpen) {
       toggleMenu();
     }
+    navigate(path); 
+  };
+
+  const handleLogout = () => {
+    if (isMenuOpen) {
+      toggleMenu();
+    }
+    logout();
+    navigate('/'); 
+    toast.success("Has cerrado sesión.");
   };
 
   return (
-    // 3. Aplicar la clase 'active' si 'isMenuOpen' es true
     <aside className={isMenuOpen ? 'active' : ''}>
       <header>
-        {/* 4. Añadir el 'onClick' a los links para que cierren el menú */}
-        <NavLink to="/" onClick={handleLinkClick}>
+        <a href="#" onClick={(e) => { e.preventDefault(); handleLinkClick('/'); }}>
+          {/* CORREGIDO: Todos los íconos y contenedores usan className */}
           <h1 className="logo"><Joystick /> Level-Up Gamer</h1>
-        </NavLink>
+        </a>
         <img className="logojpg" src="/img/logo.jpg" alt="Logo Level-Up Gamer" />
       </header>
       <nav>
         <ul className="menu">
           <li>
-            <NavLink className="boton-menu" to="/" onClick={handleLinkClick}>
+            <a href="#" className="boton-menu" onClick={(e) => { e.preventDefault(); handleLinkClick('/'); }}>
               <HouseDoor /> Inicio
-            </NavLink>
+            </a>
           </li>
           <li>
-            <NavLink className="boton-menu" to="/products" onClick={handleLinkClick}>
+            <a href="#" className="boton-menu" onClick={(e) => { e.preventDefault(); handleLinkClick('/products'); }}>
               <Controller /> Productos
-            </NavLink>
+            </a>
           </li>
           <li>
-            <NavLink className="boton-menu" to="/contact" onClick={handleLinkClick}>
+            <a href="#" className="boton-menu" onClick={(e) => { e.preventDefault(); handleLinkClick('/contact'); }}>
               <ChatDotsFill /> Contáctanos
-            </NavLink>
+            </a>
           </li>
+
+          {/* Lógica de Autenticación */}
+          {!currentUser ? (
+            // Vista de Invitado
+            <>
+              <li>
+                <a href="#" className="boton-menu" onClick={(e) => { e.preventDefault(); handleLinkClick('/login'); }}>
+                  <PersonCircle /> Iniciar Sesión
+                </a>
+              </li>
+              <li>
+                <a href="#" className="boton-menu" onClick={(e) => { e.preventDefault(); handleLinkClick('/register'); }}>
+                  <PersonPlusFill /> Registrarse
+                </a>
+              </li>
+            </>
+          ) : (
+            // Vista de Usuario Autenticado
+            <>
+              <li>
+                <a href="#" className="boton-menu" onClick={(e) => { e.preventDefault(); handleLinkClick('/profile'); }}>
+                  <PersonVcard /> Mi Perfil
+                </a>
+              </li>
+              <li>
+                <a href="#" className="boton-menu" onClick={(e) => { e.preventDefault(); handleLogout(); }}>
+                  <BoxArrowRight /> Cerrar Sesión
+                </a>
+              </li>
+            </>
+          )}
+          {/* Fin Lógica de Autenticación */}
+
           <li>
-            <NavLink className="boton-menu boton-carrito" to="/cart" onClick={handleLinkClick}>
-              <Cart /> Carrito <span className="numerito">{totalItems}</span>
-            </NavLink>
+            <a href="#" className="boton-menu boton-carrito" onClick={(e) => { e.preventDefault(); handleLinkClick('/cart'); }}>
+              <Cart /> Carrito <span className="numerito">{totalItems}</span> {/* CORREGIDO: className */}
+            </a>
           </li>
         </ul>
       </nav>
       <footer>
-        <p className="texto-footer">&copy; 2025 Level-Up Gamer</p>
+        <p className="texto-footer">&copy; 2025 Level-Up Gamer</p> {/* CORREGIDO: className */}
         <small className="texto-small-footer">
           Tu tienda online de confianza para todos tus productos gamers.
         </small>
