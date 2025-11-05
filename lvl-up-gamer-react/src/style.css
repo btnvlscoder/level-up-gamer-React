@@ -61,10 +61,12 @@ main {
 
 .logo {
   font-weight: 500;
-  font-size: 1.2rem;
+  font-size: 1.75rem; /* Ajustado */
   color: var(--clr-accent-blue);
+  /* Propiedades de Flex para alinear ícono y texto */
+  display: flex;
+  align-items: center;
   gap: 0.5rem;
-
 }
 
 .logojpg {
@@ -349,7 +351,10 @@ main {
   border-radius:.5rem;
 }
 
-/* PRODUCTOS+IMG */
+/* ========================================
+SECCIÓN PRODUCTOS+IMG CORREGIDA
+========================================
+*/
 
 .contenedor-productos {
   display: grid;
@@ -357,7 +362,8 @@ main {
   gap: 2rem;
 }
 
-.producto {
+/* Cambiado de .producto a .product */
+.product {
   background-color: var(--clr-main);
   border-radius: 1rem;
   overflow: hidden;
@@ -368,7 +374,7 @@ main {
   flex-direction: column;
 }
 
-.producto-imagen-container {
+.product-img-container {
   width: 100%;
   height: 220px;
   overflow: hidden;
@@ -378,7 +384,8 @@ main {
   background-color: rgba(0, 0, 0, 0.1);
 }
 
-.producto-imagen {
+/* Cambiado de .producto-imagen a .product-img */
+.product-img {
   width: 100%;
   height: 250px;
   object-fit: contain;
@@ -388,11 +395,13 @@ main {
   padding: 0.5rem;
 }
 
-.producto:hover .producto-imagen {
+/* Corregido para usar .product y .product-img */
+.product:hover .product-img {
   transform: scale(1.05);
 }
 
-.producto-detalles {
+/* Cambiado de .producto-detalles a .product-details */
+.product-details {
   background-color: var(--clr-main);
   color: var(--clr-gray);
   padding: 1rem;
@@ -402,7 +411,8 @@ main {
   gap: .5rem;
 }
 
-.producto-marca {
+/* Cambiado de .producto-marca a .product-signature */
+.product-signature {
   font-size: 0.75rem;
   text-transform: uppercase;
   color: var(--clr-gray);
@@ -410,7 +420,8 @@ main {
   margin: 0;
 }
 
-.producto-titulo {
+/* Cambiado de .producto-titulo a .product-title */
+.product-title {
   font-size: 1rem;
   color: var(--clr-accent-green);
   margin: 0;
@@ -419,24 +430,26 @@ main {
   flex-grow: 1;
 }
 
-.producto-titulo a {
+.product-title a {
   color: inherit;
   text-decoration: none;
   transition: color 0.3s ease;
 }
 
-.producto-titulo a:hover {
+.product-title a:hover {
   color: var(--clr-accent-blue);
 }
 
-.precio {
+/* Cambiado de .precio a .price */
+.price {
   font-size: 1.1rem;
   color: var(--clr-accent-blue);
   margin: 0.5rem 0;
   font-weight: bold;
 }
 
-.producto-agregar {
+/* Cambiado de .producto-agregar a .product-add */
+.product-add {
   border: 0;
   background-color: var(--clr-accent-blue);
   color: var(--clr-gray);
@@ -449,10 +462,16 @@ main {
   margin-top: auto;
 }
 
-.producto-agregar:hover {
+.product-add:hover {
   background-color: var(--clr-accent-green);
   color: var(--clr-main);
 }
+
+/* ========================================
+FIN SECCIÓN CORREGIDA
+========================================
+*/
+
 
 /* DETALLE PRODUCTO*/
 .producto-detalle-container {
@@ -595,11 +614,27 @@ main {
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
+/* Esta clase SÍ usa .producto-agregar, la dejamos así */
 .producto-info .producto-agregar {
   padding: 0.6rem 1.2rem;
   margin-top: 1rem;
   width: auto;
   display: inline-block;
+  
+  /* Heredamos los estilos de .product-add por si acaso */
+  border: 0;
+  background-color: var(--clr-accent-blue);
+  color: var(--clr-gray);
+  text-transform: uppercase;
+  border-radius: 2rem;
+  cursor: pointer;
+  transition: background-color .3s, color .3s;
+  font-size: 0.9rem;
+}
+
+.producto-info .producto-agregar:hover {
+  background-color: var(--clr-accent-green);
+  color: var(--clr-main);
 }
 
 .btn-volver {
@@ -1341,17 +1376,18 @@ main {
 }
 
 @media (max-width: 576px) {
-  .producto-detalles {
+  /* Renombrado de .producto-detalles a .product-details */
+  .product-details {
     padding: 1rem;
   }
   
-  .producto-titulo {
+  /* Renombrado de .producto-titulo a .product-title */
+  .product-title {
     font-size: 1rem;
   }
   
-  .precio {
+  /* Renombrado de .precio a .price */
+  .price {
     font-size: 1.1rem;
   }
-
-  
 }

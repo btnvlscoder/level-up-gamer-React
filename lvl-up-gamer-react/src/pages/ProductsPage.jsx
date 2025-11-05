@@ -1,48 +1,48 @@
 import React, { useState } from 'react';
+import products from '../data/products'; 
 
-// 1. Importar nuestros datos y el nuevo componente
-import productos from '../data/products'; // Asumiendo que products.js está en src/data/
-import ProductCard from '../components/ProductCard'; // El card que acabamos de crear
-import { Search } from 'react-bootstrap-icons'; // Icono para el botón de búsqueda
+import ProductCard from '../components/ProductCard';
+import { Search } from 'react-bootstrap-icons'; 
 
-// 2. Extraer categorías únicas para el <select>
-const categoriasUnicas = ["todos", ...new Set(productos.map(p => p.categoria))];
+// 2. Extracción segura de categorías
+// Comprobamos si 'products' es un array antes de mapearlo
+const categoriasUnicas = Array.isArray(products)
+  ? ["todos", ...new Set(products.map(p => p.category))]
+  : ["todos"];
 
 export default function ProductsPage() {
   
-  // 3. Crear "estados" para manejar los filtros
   const [categoria, setCategoria] = useState('todos');
   const [terminoBusqueda, setTerminoBusqueda] = useState('');
 
-  // 4. Lógica de filtrado
-  const productosFiltrados = productos
+  // 4. Lógica de filtrado (con comprobación de 'products')
+  const productosFiltrados = (Array.isArray(products) ? products : [])
     .filter(p => {
-      // Filtro por categoría
-      return categoria === 'todos' ? true : p.categoria === categoria;
+      return categoria === 'todos' ? true : p.category === categoria;
     })
     .filter(p => {
-      // Filtro por término de búsqueda
       const t = terminoBusqueda.toLowerCase();
-      return (
-        p.nombre.toLowerCase().includes(t) ||
-        (p.marca && p.marca.toLowerCase().includes(t))
-      );
+      const nombreCoincide = p.name && p.name.toLowerCase().includes(t);
+      const marcaCoincide = p.signature && p.signature.toLowerCase().includes(t);
+      return nombreCoincide || marcaCoincide;
     });
 
   return (
     <>
       <h2 className="titulo-principal">Catálogo de productos</h2>
       
-      {/* 5. Conectar los filtros al "estado" */}
       <div className="productos-toolbar">
         <select 
           id="filtro-categoria" 
           className="filtro-categoria"
-          value={categoria} // El valor está atado al estado
-          onChange={(e) => setCategoria(e.target.value)} // El onChange actualiza el estado
+          value={categoria}
+          onChange={(e) => setCategoria(e.target.value)}
         >
+          {/* Este .map() AHORA tiene una 'key' segura */}
           {categoriasUnicas.map(cat => (
-            <option key={cat} value={cat}>{cat === 'todos' ? 'Todas las categorías' : cat}</option>
+            <option key={cat} value={cat}>
+              {cat === 'todos' ? 'Todas las categorías' : cat}
+            </option>
           ))}
         </select>
         
@@ -51,27 +51,24 @@ export default function ProductsPage() {
           className="buscador" 
           type="search" 
           placeholder="Buscar producto..." 
-          value={terminoBusqueda} // El valor está atado al estado
-          onChange={(e) => setTerminoBusqueda(e.target.value)} // El onChange actualiza el estado
+          value={terminoBusqueda}
+          onChange={(e) => setTerminoBusqueda(e.target.value)}
         />
         <button id="btnBuscar" className="btn btn-primary">
           <Search />
         </button>
       </div>
 
-      {/* 6. Renderizado de la lista */}
       <div className="contenedor-productos">
-        {/* Usamos un renderizado condicional */}
+        {/* Este .map() AHORA tiene una 'key' segura */}
         {productosFiltrados.length > 0 ? (
-          // Si hay productos, los mapeamos
           productosFiltrados.map(producto => (
             <ProductCard 
-              key={producto.codigo} // La 'key' es crucial para React
-              producto={producto}   // Pasamos el objeto producto como 'prop'
+              key={producto.code} 
+              product={producto}
             />
           ))
         ) : (
-          // Si no hay productos, mostramos un mensaje
           <div className="no-resultados">
             <i className="bi bi-exclamation-triangle"></i> No se encontraron productos.
           </div>

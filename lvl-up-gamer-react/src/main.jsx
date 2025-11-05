@@ -11,6 +11,7 @@ import './style.css';
 
 // Layout Principal
 import MainLayout from './components/MainLayout';
+import ProductDetailPage from './pages/ProductDetailPage';
 
 // Páginas
 import HomePage from './pages/HomePage';
@@ -31,6 +32,10 @@ const router = createBrowserRouter([
       {
         path: 'productos',
         element: <ProductsPage />,
+      },
+      {
+        path: 'producto/:code',
+        element: <ProductDetailPage />,
       },
       {
         path: 'contacto',
