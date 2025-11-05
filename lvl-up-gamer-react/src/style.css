@@ -1450,3 +1450,101 @@ FIN SECCIÓN CORREGIDA
     display: block;
   }
 }
+
+/* ========================================
+   ESTILOS PARA EL VOUCHER CON EMAIL
+   ======================================== */
+
+/* Contenedor para la lista de items en el voucher */
+.voucher-items-list {
+  max-height: 150px; /* Límite de altura para que no sea muy largo */
+  overflow-y: auto; /* Scroll si hay muchos items */
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  background-color: #f0f0f0;
+  border-radius: 0.25rem;
+}
+
+/* Formulario de Email en el Modal */
+.voucher-email-form {
+  margin: 1.5rem 0;
+  text-align: left;
+}
+
+.voucher-email-form p {
+  font-size: 0.9rem;
+  color: #333;
+  margin-bottom: 0.5rem;
+  font-family: 'Roboto', sans-serif;
+}
+
+.voucher-email-form input[type="email"] {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+  font-family: 'Roboto', sans-serif;
+  box-sizing: border-box; /* Importante para que el padding no rompa el ancho */
+}
+
+/* Botón de Enviar Correo */
+.btn-enviar-correo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  
+  background-color: var(--clr-accent-green);
+  color: var(--clr-main);
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 0.75rem;
+}
+
+.btn-enviar-correo:hover {
+  background-color: #2bc00f; /* Un verde un poco más oscuro */
+  color: var(--clr-main);
+  transform: translateY(-2px);
+}
+
+/* ========================================
+   ESTILOS PARA EL MENSAJE DE ÉXITO (EMAIL)
+   ======================================== */
+
+.email-success-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 1rem;
+  padding: 1.5rem 1rem;
+  background-color: #f0fdf4; /* Un fondo verde muy claro */
+  border: 1px solid var(--clr-accent-green);
+  border-radius: 0.5rem;
+  margin-top: 1rem;
+}
+
+.email-success-message svg {
+  font-size: 2.5rem; /* Ícono grande */
+  color: var(--clr-accent-green);
+}
+
+.email-success-message p {
+  font-family: 'Roboto', sans-serif;
+  color: #222; /* Texto oscuro para legibilidad */
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.email-success-message p strong {
+  color: var(--clr-main);
+  font-weight: 600;
+}
