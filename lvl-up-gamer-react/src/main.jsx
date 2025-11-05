@@ -47,5 +47,3 @@ root.render(
     <RouterProvider router={router} />
   </React.StrictMode>
 );
-
-//git push origin dev --force
