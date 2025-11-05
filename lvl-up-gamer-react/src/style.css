@@ -61,7 +61,7 @@ main {
 
 .logo {
   font-weight: 500;
-  font-size: 1.75rem;
+  font-size: 1.3  rem;
   color: var(--clr-accent-blue);
   display: flex;
   align-items: center;
@@ -1387,5 +1387,66 @@ FIN SECCIÓN CORREGIDA
   
   .price {
     font-size: 1.1rem;
+  }
+}
+
+/*ESTILOS PARA EL MENÚ MÓVIL*/
+
+/* El botón hamburguesa */
+.btn-menu-toggle {
+  /* Oculto por defecto en escritorio */
+  display: none;
+  
+  /* Estilos del botón */
+  position: fixed; /* Se queda fijo en la pantalla */
+  top: 1.5rem;
+  right: 1.5rem; /* Lo ponemos arriba a la derecha */
+  z-index: 999;  /* Por debajo del aside (que es 1000) */
+  
+  background-color: var(--clr-main-light);
+  color: var(--clr-accent-green);
+  border: 1px solid var(--clr-accent-blue);
+  border-radius: 0.5rem;
+  width: 50px;
+  height: 50px;
+  font-size: 1.75rem;
+  
+  /* Centrar el ícono */
+  padding: 0;
+  line-height: 0;
+  
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+}
+
+/* El fondo oscuro */
+.overlay-mobile {
+  /* Oculto por defecto */
+  display: none;
+  
+  /* Cuando esté activo */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 99; /* Justo debajo del aside */
+}
+
+/* Media Query (la misma que usas para el 'aside') */
+@media (max-width: 968px) {
+  /* Mostramos el botón hamburguesa */
+  .btn-menu-toggle {
+    display: block;
+  }
+  
+  /* El aside (Header) ya tiene una regla que lo pone en z-index: 100
+     así que solo necesitamos mostrar el overlay cuando el aside esté activo.
+  */
+  
+  /* Si el aside está activo, mostramos el overlay */
+  aside.active + .overlay-mobile {
+    display: block;
   }
 }

@@ -1,6 +1,7 @@
+// Contenido de src/components/Header.jsx
+
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-
 import { 
   Joystick, 
   HouseDoor, 
@@ -8,14 +9,25 @@ import {
   ChatDotsFill, 
   Cart 
 } from 'react-bootstrap-icons';
+import { useCart } from '../context/CartContext'; 
 
-function Header() {
-  const numerito = 0; 
+// 1. Aceptar 'isMenuOpen' y 'toggleMenu' como props
+function Header({ isMenuOpen, toggleMenu }) {
+  const { totalItems } = useCart(); 
+
+  // 2. Función para cerrar el menú si se hace clic en un link (en móvil)
+  const handleLinkClick = () => {
+    if (isMenuOpen) {
+      toggleMenu();
+    }
+  };
 
   return (
-    <aside>
+    // 3. Aplicar la clase 'active' si 'isMenuOpen' es true
+    <aside className={isMenuOpen ? 'active' : ''}>
       <header>
-        <NavLink to="/">
+        {/* 4. Añadir el 'onClick' a los links para que cierren el menú */}
+        <NavLink to="/" onClick={handleLinkClick}>
           <h1 className="logo"><Joystick /> Level-Up Gamer</h1>
         </NavLink>
         <img className="logojpg" src="/img/logo.jpg" alt="Logo Level-Up Gamer" />
@@ -23,23 +35,23 @@ function Header() {
       <nav>
         <ul className="menu">
           <li>
-            <NavLink className="boton-menu" to="/">
+            <NavLink className="boton-menu" to="/" onClick={handleLinkClick}>
               <HouseDoor /> Inicio
             </NavLink>
           </li>
           <li>
-            <NavLink className="boton-menu" to="/products">
+            <NavLink className="boton-menu" to="/products" onClick={handleLinkClick}>
               <Controller /> Productos
             </NavLink>
           </li>
           <li>
-            <NavLink className="boton-menu" to="/contact">
+            <NavLink className="boton-menu" to="/contact" onClick={handleLinkClick}>
               <ChatDotsFill /> Contáctanos
             </NavLink>
           </li>
           <li>
-            <NavLink className="boton-menu boton-carrito" to="/cart">
-              <Cart /> Carrito <span className="numerito">{numerito}</span>
+            <NavLink className="boton-menu boton-carrito" to="/cart" onClick={handleLinkClick}>
+              <Cart /> Carrito <span className="numerito">{totalItems}</span>
             </NavLink>
           </li>
         </ul>

@@ -1,19 +1,23 @@
+// Contenido de src/pages/ProductDetailPage.jsx
+
 import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import products from '../data/products';
+import products from '../data/products'; // <--- Asegúrate de que esta ruta también sea correcta
 import { Cart, ArrowLeft, ChevronLeft, ChevronRight } from 'react-bootstrap-icons';
 import { PriceFormat } from '../utils/formatter.js';
+import { useCart } from '../context/CartContext';
+import toast from 'react-hot-toast'; // <--- Importar toast
 
 export default function ProductDetailPage() {
   const { code } = useParams();
   const product = products.find(p => p.code === code);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const { addItem } = useCart(); 
 
   if (!product) {
     return (
       <div className="producto-detalle-container">
         <h2>Producto no encontrado</h2>
-        {/* --- CAMBIO AQUÍ --- */}
         <Link to="/products" className="btn-volver">
           <ArrowLeft /> Volver al catálogo
         </Link>
@@ -23,7 +27,6 @@ export default function ProductDetailPage() {
 
   const { name, signature, category, description, price, img } = product;
 
-  // Lógica del Slider
   const prevSlide = () => {
     const isFirstSlide = currentIndex === 0;
     const newIndex = isFirstSlide ? img.length - 1 : currentIndex - 1;
@@ -41,7 +44,8 @@ export default function ProductDetailPage() {
   };
   
   const handleAddToCart = () => {
-    console.log(`Añadir ${product.code} al carrito`);
+    addItem(product);
+    toast.success(`"${name}" agregado al carrito!`); // <--- Llamar a toast
   }
 
   return (
@@ -75,23 +79,22 @@ export default function ProductDetailPage() {
         </div>
 
         <div className="producto-info">
-            <h2 className="producto-titulo-detalle">{name}</h2>
-            <p className="producto-marca-detalle">{signature}</p>
-            <p className="producto-codigo">Código: {code}</p>
-            <p className="producto-categoria">Categoría: {category}</p>
-            <p className="producto-descripcion">{description}</p>
-            <p className="producto-precio">{PriceFormat(price)}</p>
+          <h2 className="producto-titulo-detalle">{name}</h2>
+          <p className="producto-marca-detalle">{signature}</p>
+          <p className="producto-codigo">Código: {code}</p>
+          <p className="producto-categoria">Categoría: {category}</p>
+          <p className="producto-descripcion">{description}</p>
+          <p className="producto-precio">{PriceFormat(price)}</p>
           
-            <div className="acciones-botones"> 
+          <div className="acciones-botones"> 
             <button className="producto-agregar" id="agregar-detalle" onClick={handleAddToCart}>
-                <Cart /> Agregar al carrito
+              <Cart /> Agregar al carrito
             </button>
             
             <Link to="/products" className="btn-volver">
-                <ArrowLeft /> Volver al catálogo
+              <ArrowLeft /> Volver al catálogo
             </Link>
-            </div>
-            
+          </div>
         </div>
         
       </div>

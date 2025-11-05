@@ -1,11 +1,15 @@
+// Contenido de src/pages/ProductsPage.jsx
+
 import React, { useState } from 'react';
+
+// --- ¡¡ESTA LÍNEA ES EL PROBLEMA!! ---
+// Asegúrate de que la ruta sea correcta a tu archivo products.js
+// ¿Está en 'src/data/products.js'?
 import products from '../data/products'; 
 
 import ProductCard from '../components/ProductCard';
 import { Search } from 'react-bootstrap-icons'; 
 
-// 2. Extracción segura de categorías
-// Comprobamos si 'products' es un array antes de mapearlo
 const categoriasUnicas = Array.isArray(products)
   ? ["todos", ...new Set(products.map(p => p.category))]
   : ["todos"];
@@ -15,7 +19,6 @@ export default function ProductsPage() {
   const [categoria, setCategoria] = useState('todos');
   const [terminoBusqueda, setTerminoBusqueda] = useState('');
 
-  // 4. Lógica de filtrado (con comprobación de 'products')
   const productosFiltrados = (Array.isArray(products) ? products : [])
     .filter(p => {
       return categoria === 'todos' ? true : p.category === categoria;
@@ -38,7 +41,6 @@ export default function ProductsPage() {
           value={categoria}
           onChange={(e) => setCategoria(e.target.value)}
         >
-          {/* Este .map() AHORA tiene una 'key' segura */}
           {categoriasUnicas.map(cat => (
             <option key={cat} value={cat}>
               {cat === 'todos' ? 'Todas las categorías' : cat}
@@ -60,7 +62,6 @@ export default function ProductsPage() {
       </div>
 
       <div className="contenedor-productos">
-        {/* Este .map() AHORA tiene una 'key' segura */}
         {productosFiltrados.length > 0 ? (
           productosFiltrados.map(producto => (
             <ProductCard 
