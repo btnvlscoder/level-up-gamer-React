@@ -61,7 +61,7 @@ main {
 
 .logo {
   font-weight: 500;
-  font-size: 1.75rem;
+  font-size: 1.3  rem;
   color: var(--clr-accent-blue);
   display: flex;
   align-items: center;
@@ -1388,4 +1388,229 @@ FIN SECCIÓN CORREGIDA
   .price {
     font-size: 1.1rem;
   }
+}
+
+/*ESTILOS PARA EL MENÚ MÓVIL*/
+
+/* El botón hamburguesa */
+.btn-menu-toggle {
+  /* Oculto por defecto en escritorio */
+  display: none;
+  
+  /* Estilos del botón */
+  position: fixed; /* Se queda fijo en la pantalla */
+  top: 1.5rem;
+  right: 1.5rem; /* Lo ponemos arriba a la derecha */
+  z-index: 999;  /* Por debajo del aside (que es 1000) */
+  
+  background-color: var(--clr-main-light);
+  color: var(--clr-accent-green);
+  border: 1px solid var(--clr-accent-blue);
+  border-radius: 0.5rem;
+  width: 50px;
+  height: 50px;
+  font-size: 1.75rem;
+  
+  /* Centrar el ícono */
+  padding: 0;
+  line-height: 0;
+  
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+}
+
+/* El fondo oscuro */
+.overlay-mobile {
+  /* Oculto por defecto */
+  display: none;
+  
+  /* Cuando esté activo */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 99; /* Justo debajo del aside */
+}
+
+/* Media Query (la misma que usas para el 'aside') */
+@media (max-width: 968px) {
+  /* Mostramos el botón hamburguesa */
+  .btn-menu-toggle {
+    display: block;
+  }
+  
+  /* El aside (Header) ya tiene una regla que lo pone en z-index: 100
+     así que solo necesitamos mostrar el overlay cuando el aside esté activo.
+  */
+  
+  /* Si el aside está activo, mostramos el overlay */
+  aside.active + .overlay-mobile {
+    display: block;
+  }
+}
+
+/* ========================================
+   ESTILOS PARA EL VOUCHER CON EMAIL
+   ======================================== */
+
+/* Contenedor para la lista de items en el voucher */
+.voucher-items-list {
+  max-height: 150px; /* Límite de altura para que no sea muy largo */
+  overflow-y: auto; /* Scroll si hay muchos items */
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  background-color: #f0f0f0;
+  border-radius: 0.25rem;
+}
+
+/* Formulario de Email en el Modal */
+.voucher-email-form {
+  margin: 1.5rem 0;
+  text-align: left;
+}
+
+.voucher-email-form p {
+  font-size: 0.9rem;
+  color: #333;
+  margin-bottom: 0.5rem;
+  font-family: 'Roboto', sans-serif;
+}
+
+.voucher-email-form input[type="email"] {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+  font-family: 'Roboto', sans-serif;
+  box-sizing: border-box; /* Importante para que el padding no rompa el ancho */
+}
+
+/* Botón de Enviar Correo */
+.btn-enviar-correo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  
+  background-color: var(--clr-accent-green);
+  color: var(--clr-main);
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 0.75rem;
+}
+
+.btn-enviar-correo:hover {
+  background-color: #2bc00f; /* Un verde un poco más oscuro */
+  color: var(--clr-main);
+  transform: translateY(-2px);
+}
+
+/* ========================================
+   ESTILOS PARA EL MENSAJE DE ÉXITO (EMAIL)
+   ======================================== */
+
+.email-success-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 1rem;
+  padding: 1.5rem 1rem;
+  background-color: #f0fdf4; /* Un fondo verde muy claro */
+  border: 1px solid var(--clr-accent-green);
+  border-radius: 0.5rem;
+  margin-top: 1rem;
+}
+
+.email-success-message svg {
+  font-size: 2.5rem; /* Ícono grande */
+  color: var(--clr-accent-green);
+}
+
+.email-success-message p {
+  font-family: 'Roboto', sans-serif;
+  color: #222; /* Texto oscuro para legibilidad */
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.email-success-message p strong {
+  color: var(--clr-main);
+  font-weight: 600;
+}
+
+/* --- Bloque de Autenticación (Debe estar en src/style.css) --- */
+
+.auth-container {
+  /* Ancho máximo y centrado */
+  max-width: 500px;
+  margin: 2rem auto;
+  /* El padding interno es clave para el espaciado */
+  padding: 2.5rem; 
+  
+  background-color: var(--clr-main);
+  border: 1px solid var(--clr-accent-blue);
+  border-radius: 1rem;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+  color: var(--clr-white);
+}
+
+.auth-form .form-group {
+  margin-bottom: 1.5rem;
+}
+
+.auth-form label {
+  display: block; /* Asegura que el label ocupe toda la línea */
+  color: var(--clr-accent-blue);
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  font-family: 'Roboto', sans-serif;
+  font-size: 0.9rem;
+}
+
+.auth-form input {
+  /* Estilos para que el input ocupe el 100% del contenedor */
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--clr-accent-blue);
+  border-radius: 0.5rem;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: var(--clr-white);
+  box-sizing: border-box; /* Crucial para que el ancho sea predecible */
+  font-family: 'Roboto', sans-serif;
+}
+
+.auth-button {
+  /* ¡CLAVE!: Anulamos cualquier borde o fondo predeterminado */
+  border: none !important; 
+  outline: none !important; 
+  
+  width: 100%;
+  background-color: var(--clr-accent-green);
+  color: var(--clr-main);
+  padding: .75rem;
+  text-transform: uppercase;
+  /* Damos el estilo neon y redondo */
+  border-radius: 2rem; 
+  cursor: pointer;
+  transition: all .3s;
+  font-size: 1rem;
+  font-weight: 700;
+  margin-top: 1rem;
+  font-family: 'Orbitron', sans-serif; /* Usamos Orbitron para el botón */
+}
+
+.auth-button:hover {
+  background-color: #2fb913; /* Un verde un poco más oscuro */
+  box-shadow: 0 0 15px var(--clr-accent-green); /* Efecto neón al pasar el mouse */
 }

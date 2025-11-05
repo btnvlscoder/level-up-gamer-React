@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
-import products from '../data/products'; 
 
+import products from '../data/products'; 
 import ProductCard from '../components/ProductCard';
 import { Search } from 'react-bootstrap-icons'; 
 
-// 2. Extracción segura de categorías
-// Comprobamos si 'products' es un array antes de mapearlo
+// Extracción segura de categorías únicas
 const categoriasUnicas = Array.isArray(products)
   ? ["todos", ...new Set(products.map(p => p.category))]
   : ["todos"];
@@ -15,12 +14,14 @@ export default function ProductsPage() {
   const [categoria, setCategoria] = useState('todos');
   const [terminoBusqueda, setTerminoBusqueda] = useState('');
 
-  // 4. Lógica de filtrado (con comprobación de 'products')
+  // Lógica de Filtrado
   const productosFiltrados = (Array.isArray(products) ? products : [])
     .filter(p => {
+      // Filtro por categoría
       return categoria === 'todos' ? true : p.category === categoria;
     })
     .filter(p => {
+      // Filtro por término de búsqueda (con guardas de seguridad)
       const t = terminoBusqueda.toLowerCase();
       const nombreCoincide = p.name && p.name.toLowerCase().includes(t);
       const marcaCoincide = p.signature && p.signature.toLowerCase().includes(t);
@@ -32,13 +33,13 @@ export default function ProductsPage() {
       <h2 className="titulo-principal">Catálogo de productos</h2>
       
       <div className="productos-toolbar">
+        {/* Selector de Categoría (Formulario Controlado) */}
         <select 
           id="filtro-categoria" 
           className="filtro-categoria"
           value={categoria}
           onChange={(e) => setCategoria(e.target.value)}
         >
-          {/* Este .map() AHORA tiene una 'key' segura */}
           {categoriasUnicas.map(cat => (
             <option key={cat} value={cat}>
               {cat === 'todos' ? 'Todas las categorías' : cat}
@@ -46,6 +47,7 @@ export default function ProductsPage() {
           ))}
         </select>
         
+        {/* Input de Búsqueda (Formulario Controlado) */}
         <input 
           id="buscador" 
           className="buscador" 
@@ -60,7 +62,7 @@ export default function ProductsPage() {
       </div>
 
       <div className="contenedor-productos">
-        {/* Este .map() AHORA tiene una 'key' segura */}
+        {/* Renderizado de Productos */}
         {productosFiltrados.length > 0 ? (
           productosFiltrados.map(producto => (
             <ProductCard 
