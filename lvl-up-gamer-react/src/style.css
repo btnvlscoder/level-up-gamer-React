@@ -61,9 +61,8 @@ main {
 
 .logo {
   font-weight: 500;
-  font-size: 1.75rem; /* Ajustado */
+  font-size: 1.75rem;
   color: var(--clr-accent-blue);
-  /* Propiedades de Flex para alinear ícono y texto */
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -362,7 +361,6 @@ SECCIÓN PRODUCTOS+IMG CORREGIDA
   gap: 2rem;
 }
 
-/* Cambiado de .producto a .product */
 .product {
   background-color: var(--clr-main);
   border-radius: 1rem;
@@ -384,7 +382,6 @@ SECCIÓN PRODUCTOS+IMG CORREGIDA
   background-color: rgba(0, 0, 0, 0.1);
 }
 
-/* Cambiado de .producto-imagen a .product-img */
 .product-img {
   width: 100%;
   height: 250px;
@@ -395,12 +392,10 @@ SECCIÓN PRODUCTOS+IMG CORREGIDA
   padding: 0.5rem;
 }
 
-/* Corregido para usar .product y .product-img */
 .product:hover .product-img {
   transform: scale(1.05);
 }
 
-/* Cambiado de .producto-detalles a .product-details */
 .product-details {
   background-color: var(--clr-main);
   color: var(--clr-gray);
@@ -411,7 +406,6 @@ SECCIÓN PRODUCTOS+IMG CORREGIDA
   gap: .5rem;
 }
 
-/* Cambiado de .producto-marca a .product-signature */
 .product-signature {
   font-size: 0.75rem;
   text-transform: uppercase;
@@ -420,7 +414,6 @@ SECCIÓN PRODUCTOS+IMG CORREGIDA
   margin: 0;
 }
 
-/* Cambiado de .producto-titulo a .product-title */
 .product-title {
   font-size: 1rem;
   color: var(--clr-accent-green);
@@ -440,7 +433,6 @@ SECCIÓN PRODUCTOS+IMG CORREGIDA
   color: var(--clr-accent-blue);
 }
 
-/* Cambiado de .precio a .price */
 .price {
   font-size: 1.1rem;
   color: var(--clr-accent-blue);
@@ -448,7 +440,6 @@ SECCIÓN PRODUCTOS+IMG CORREGIDA
   font-weight: bold;
 }
 
-/* Cambiado de .producto-agregar a .product-add */
 .product-add {
   border: 0;
   background-color: var(--clr-accent-blue);
@@ -614,10 +605,20 @@ FIN SECCIÓN CORREGIDA
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
-/* Esta clase SÍ usa .producto-agregar, la dejamos así */
+/* --- ¡NUEVA SECCIÓN PARA ARREGLAR BOTONES! --- */
+.acciones-botones {
+  display: flex;
+  flex-wrap: wrap; /* Para que se apilen en pantallas pequeñas */
+  align-items: center;
+  gap: 1rem; /* Espacio entre los botones */
+  margin-top: 1.5rem; /* Espacio arriba, separándolos del precio */
+}
+/* --- FIN NUEVA SECCIÓN --- */
+
+
 .producto-info .producto-agregar {
   padding: 0.6rem 1.2rem;
-  margin-top: 1rem;
+  /* margin-top: 1rem; -> Quitado, ahora lo maneja .acciones-botones */
   width: auto;
   display: inline-block;
   
@@ -1376,17 +1377,14 @@ FIN SECCIÓN CORREGIDA
 }
 
 @media (max-width: 576px) {
-  /* Renombrado de .producto-detalles a .product-details */
   .product-details {
     padding: 1rem;
   }
   
-  /* Renombrado de .producto-titulo a .product-title */
   .product-title {
     font-size: 1rem;
   }
   
-  /* Renombrado de .precio a .price */
   .price {
     font-size: 1.1rem;
   }

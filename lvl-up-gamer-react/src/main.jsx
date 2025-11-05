@@ -30,19 +30,19 @@ const router = createBrowserRouter([
         element: <HomePage />,
       },
       {
-        path: 'productos',
+        path: 'products',
         element: <ProductsPage />,
       },
       {
-        path: 'producto/:code',
+        path: 'product/:code',
         element: <ProductDetailPage />,
       },
       {
-        path: 'contacto',
+        path: 'contact',
         element: <ContactPage />,
       },
       {
-        path: 'carrito',
+        path: 'cart',
         element: <CartPage />,
       },
     ],

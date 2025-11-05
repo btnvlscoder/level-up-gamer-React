@@ -1,7 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 
-// Importamos los iconos con los nombres correctos (sin 'Bi')
 import { 
   Joystick, 
   HouseDoor, 
@@ -17,7 +16,6 @@ function Header() {
     <aside>
       <header>
         <NavLink to="/">
-          {/* Usamos las etiquetas correctas */}
           <h1 className="logo"><Joystick /> Level-Up Gamer</h1>
         </NavLink>
         <img className="logojpg" src="/img/logo.jpg" alt="Logo Level-Up Gamer" />
@@ -30,17 +28,17 @@ function Header() {
             </NavLink>
           </li>
           <li>
-            <NavLink className="boton-menu" to="/productos">
+            <NavLink className="boton-menu" to="/products">
               <Controller /> Productos
             </NavLink>
           </li>
           <li>
-            <NavLink className="boton-menu" to="/contacto">
+            <NavLink className="boton-menu" to="/contact">
               <ChatDotsFill /> Contáctanos
             </NavLink>
           </li>
           <li>
-            <NavLink className="boton-menu boton-carrito" to="/carrito">
+            <NavLink className="boton-menu boton-carrito" to="/cart">
               <Cart /> Carrito <span className="numerito">{numerito}</span>
             </NavLink>
           </li>
