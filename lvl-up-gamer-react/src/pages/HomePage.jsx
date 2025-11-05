@@ -1,3 +1,3 @@
 export default function HomePage() { 
-  return <h2>¡Bienvenido a Level-Up Gamer! (Página de Inicio)</h2> 
+  return <h2>¡Bienvenido! (Página de Inicio)</h2> 
 }
